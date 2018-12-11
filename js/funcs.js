@@ -84,10 +84,10 @@ function getNewPath(direction) {
   return [new_path, next_pos];
 }
 
+// Create a new img object and assign the new path to it. Assign the new img the cur_photo id
+// so it can be changed every time nextPhoto() is called. Change the alt attribute
+// and add either "landscape" or "portrait" to the classList so the dimensions display accordingly.
 function createNewImg(direction) {
-  // Create a new img object and assign the new path to it. Assign the new img the cur_photo id
-  // so it can be changed every time nextPhoto() is called. Change the alt attribute
-  // and add either "landscape" or "portrait" to the classList so the dimensions display accordingly.
   let package = getNewPath(direction);
   let new_path = package[0];
   let next_pos = package[1]
@@ -103,17 +103,17 @@ function createNewImg(direction) {
   return new_img;
 }
 
+// Create a new image object for the next photo and replace the current
+// img element with that new image object
 function nextPhoto() {
-  // Create a new image object for the next photo and replace the current
-  // img element with that new image object
   let new_img = createNewImg("next");
   document.getElementById('cur_photo').replaceWith(new_img);
 }
 
+// Create a new image object for the prev photo and replace the current
+// img element with that new image object. This loads faster because the
+// img is already cached.
 function previousPhoto() {
-  // Create a new image object for the prev photo and replace the current
-  // img element with that new image object. This loads faster because the
-  // img is already cached.
   let new_img = createNewImg("prev");
   document.getElementById('cur_photo').replaceWith(new_img);
 }
@@ -151,19 +151,22 @@ function initMap() {
     zoom: 17, 
     mapTypeId: 'satellite', 
     mapTypeControl: false, 
-    streetViewControl: false
+    streetViewControl: false,
+    disableDefaultUI: true
   });
   // createMarkerArray();
   // plotMarkers();                   // Uncomment this to display the markers
 }
 
+// Go through and plot the markers on the map
 function plotMarkers() {
   for (i=0; i<photos.length; i++) {
-    var marker = new google.maps.Marker({
-      position: {lat: photos[i][1], lng: photos[i][2]}, map: map});
+    var marker = new google.maps.Marker({position: {lat: photos[i][1], lng: photos[i][2]}, map: map});
   }
 }
 
+// Check to see if the current image has a center other than the marker
+// (If the markers are showing)
 function hasNewCenter(pos) {
   if (photos[pos][5] == null && photos[pos][6] == null) {
     return false
@@ -172,6 +175,7 @@ function hasNewCenter(pos) {
   }
 }
 
+// Move the map to the coordinates associated with the new image
 function moveMap(pos) {
   if (hasNewCenter(pos)) {
     map.setCenter({lat: photos[pos][5], lng: photos[pos][6]});
