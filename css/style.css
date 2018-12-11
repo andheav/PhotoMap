@@ -4,7 +4,7 @@
 }
 
 .my-font {
-  font-family: none;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 #title {
@@ -41,4 +41,15 @@
 
 #end {
   color: #ffffff;
+}
+
+.nav .nav-item .nav-link {
+  color: rgb(70, 70, 70);
+  font-family: none;
+  font-size: 20px;
+}
+.nav .nav-item .nav-link:hover {
+  color: black;
+  font-family: none;
+  font-size: 20px;
 }
