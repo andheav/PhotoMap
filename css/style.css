@@ -32,6 +32,10 @@
   width: 100%;
 }
 
+.landscape-modified {
+  width: 90%;
+}
+
 #end {
-  color: white;
+  color: #ffffff;
 }

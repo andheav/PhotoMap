@@ -1,6 +1,6 @@
 const photos = [
-  ["DSC02063",45.245474,-92.986970,"landscape", 17, null, null],
-  ["DSC02072",45.245474,-92.986970,"landscape", 17, null, null],
+  ["DSC02063",45.245420,-92.987325,"landscape", 17, null, null],
+  ["DSC02072",45.245284,-92.987193,"landscape", 17, null, null],
   ["DSC02110",45.246647,-92.991829,"portrait", 16, null, null],
   ["DSC02186",45.258186,-92.918164,"landscape", 15, 45.257075, -92.915957],
   ["DSC02222",45.271285,-92.877985,"landscape", 16, null, null],
@@ -21,15 +21,18 @@ const photos = [
   ["DSC02752",45.484494,-93.050753,"landscape", 19, null, null],
   ["DSC02862",45.484631,-93.050602,"landscape", 19, null, null],
   ["DSC02969",45.484906,-93.050891,"landscape", 17, 45.484657, -93.050612],
-  ["DSC03067",45.245545,-92.987073,"landscape", 17, null, null],
-  ["DSC03108",45.245545,-92.987073,"landscape", 17, null, null],
-  ["DSC03126",45.245545,-92.987073,"landscape", 17, null, null],
-  ["DSC03172",45.245545,-92.987073,"landscape", 17, null, null],
-  ["DSC03180",45.245545,-92.987073,"portrait", 17, null, null],
-  ["DSC03182",45.245545,-92.987073,"landscape", 17, null, null]
+  ["DSC03000",45.242066,-92.986421,"landscape-modified", 15, 45.245369, -92.988931],
+  ["DSC03015",45.243523,-92.987709,"landscape", 17, 45.245054, -92.987032],
+  ["DSC03067",45.245420,-92.987325,"landscape", 17, null, null],
+  ["DSC03108",45.245420,-92.987325,"landscape", 17, null, null],
+  ["DSC03126",45.245420,-92.987325,"landscape", 17, null, null],
+  ["DSC03172-Pano",45.245420,-92.987325,"landscape", 17, null, null],
+  ["DSC03180",45.245420,-92.987325,"portrait", 17, null, null],
+  ["DSC03183",45.245420,-92.987325,"landscape", 17, null, null]
 ];
 
 function getIndex(cur_photo) {
+  // Get the index of the photo array associated with the current photo.
   let index = 0;
   for (i=0; i<photos.length; i++) {
     if (photos[i][0] == cur_photo) {
@@ -45,11 +48,13 @@ function getNewPath(direction) {
   let cur_photo = document.getElementById('cur_photo');
   let path = cur_photo.src.toString().split("/");
 
-  let cur_filename = path.pop();    // This needs to be fixed!
+  let cur_filename = path.pop();
   cur_filename = cur_filename.split(".jpg")[0];
 
-  let beginning = path.join("/");         // Breaks any time the link/file path is different!
+  let beginning = path.join("/");
 
+  // This block determines if the next or back button was pressed and gives 
+  // the index to that photo accordingly
   let next_pos = 0;
   if (direction == "next") {
     next_pos = getIndex(cur_filename) + 1;
@@ -57,6 +62,8 @@ function getNewPath(direction) {
     next_pos = getIndex(cur_filename) - 1;
   }
 
+  // This block determines if the end of the photo array has been reached or not.
+  // This also prevents the user from clicking past and going out of bounds
   if (next_pos == photos.length) {
     document.getElementById('end').style.color = "black";
     next_pos = photos.length-1;
@@ -64,10 +71,14 @@ function getNewPath(direction) {
     document.getElementById('end').style.color = "white";
   }
   
+  // This prevents the user from creating an error from clicking back at the beginning
+  // of the slideshow/the beginning of the photo array
   if (next_pos < 0) {
     next_pos = 0;
   }
 
+  // This gets the new photo filename and creates the path to that photo.
+  // Returns the path to the photo and the index in the photo array.
   let new_filename = photos[next_pos][0];
   let new_path = beginning + "/" + new_filename + ".jpg";
   return [new_path, next_pos];
@@ -85,31 +96,71 @@ function createNewImg(direction) {
   new_img.id = "cur_photo";
   new_img.alt = "Current Image";
   new_img.classList.add(photos[next_pos][3]);
+
+  // Call moveMap() on the next photo to be displayed to the map changes to
+  // the location associated with that photo.
   moveMap(next_pos);
   return new_img;
 }
 
 function nextPhoto() {
+  // Create a new image object for the next photo and replace the current
+  // img element with that new image object
   let new_img = createNewImg("next");
   document.getElementById('cur_photo').replaceWith(new_img);
 }
 
 function previousPhoto() {
+  // Create a new image object for the prev photo and replace the current
+  // img element with that new image object. This loads faster because the
+  // img is already cached.
   let new_img = createNewImg("prev");
   document.getElementById('cur_photo').replaceWith(new_img);
 }
 
 var map;
+// var markersOn = true;
+// var markerArray = [];
+
+// function createMarkerArray() {
+//   for (i=0; i<photos.length; i++) {
+//     markerArray.push(new google.maps.Marker({position: {lat: photos[i][1], lng: photos[i][2]}, map: map}));
+//   }
+// }
+
+// function toggleMarkers() {
+//   console.log("working; markersOn: " + markersOn);
+//   markersOn = !markersOn;
+//   if (markersOn) {
+//     for (i=0; i<markerArray.length; i++) {
+//       markerArray[i].setMap(map);
+//     }
+//   } else {
+//     for (i=0; i<markerArray.length; i++) {
+//       markerArray[i].setMap(null);
+//     }
+//     markerArray = [];
+//   }
+// }
+
 function initMap() {
+  // Initialize the map to start on the airport
   var airport = {lat: 45.245545, lng: -92.987073};
-  map = new google.maps.Map(document.getElementById('map'), {center: airport, zoom: 17, mapTypeId: 'satellite', mapTypeControl: false, streetViewControl: false});
-  var marker = new google.maps.Marker({position: airport, map: map});
-  plotMarkers()
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: airport, 
+    zoom: 17, 
+    mapTypeId: 'satellite', 
+    mapTypeControl: false, 
+    streetViewControl: false
+  });
+  // createMarkerArray();
+  // plotMarkers();                   // Uncomment this to display the markers
 }
 
 function plotMarkers() {
   for (i=0; i<photos.length; i++) {
-    var marker = new google.maps.Marker({position: {lat: photos[i][1], lng: photos[i][2]}, map: map});
+    var marker = new google.maps.Marker({
+      position: {lat: photos[i][1], lng: photos[i][2]}, map: map});
   }
 }
 
