@@ -25,15 +25,18 @@
 } */
 
 .portrait {
-  width: 48%;
+  width: 300px;
+  height: 450px;
 }
 
 .landscape {
-  width: 100%;
+  width: 675px;
+  height: 450px;
 }
 
 .landscape-modified {
-  width: 90%;
+  width: 562.5px;
+  height: 450px;
 }
 
 #end {
