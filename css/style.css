@@ -42,3 +42,13 @@
 #end {
   color: #ffffff;
 }
+
+.nav .nav-item .nav-link {
+  color: rgb(100, 100, 100);
+  font-family: none;
+  font-size: 20px;
+}
+
+.nav .nav-item .nav-link:hover {
+  color: rgb(48, 48, 48);
+}
