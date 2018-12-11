@@ -44,11 +44,11 @@
 }
 
 .nav .nav-item .nav-link {
-  color: rgb(100, 100, 100);
+  color: rgb(100, 100, 100);      /* This also doesn't work on desktops? */
   font-family: none;
   font-size: 20px;
 }
 
 .nav .nav-item .nav-link:hover {
-  color: rgb(48, 48, 48);
+  color: rgb(48, 48, 48);         /* This doesn't work on desktops? */
 }
