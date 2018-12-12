@@ -39,6 +39,12 @@
   height: 450px;
 }
 
+.landscape-pano {
+  width: 675px;
+  height: 187px;  
+  margin-top: 131.5px;          /*  */
+}
+
 #end {
   color: #ffffff;
 }

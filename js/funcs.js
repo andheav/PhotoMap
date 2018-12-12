@@ -26,7 +26,7 @@ const photos = [
   ["DSC03067",45.245420,-92.987325,"landscape", 17, null, null],
   ["DSC03108",45.245420,-92.987325,"landscape", 17, null, null],
   ["DSC03126",45.245420,-92.987325,"landscape", 17, null, null],
-  ["DSC03172-Pano",45.245420,-92.987325,"landscape", 17, null, null],
+  ["DSC03172-Pano",45.245420,-92.987325,"landscape-pano", 17, null, null],
   ["DSC03180",45.245420,-92.987325,"portrait", 17, null, null],
   ["DSC03183",45.245420,-92.987325,"landscape", 17, null, null]
 ];
