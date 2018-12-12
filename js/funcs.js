@@ -106,7 +106,10 @@ function createNewImg(direction) {
 // Create a new image object for the next photo and replace the current
 // img element with that new image object
 function nextPhoto() {
+  let t1 = performance.now();
   let new_img = createNewImg("next");
+  let t2 = performance.now();
+  console.log("Time for createNewImg(): " + ((t2-t1)*0.001).toFixed(4))
   document.getElementById('cur_photo').replaceWith(new_img);
 }
 
@@ -182,6 +185,6 @@ function moveMap(pos) {
   } else {
     map.setCenter({lat: photos[pos][1], lng: photos[pos][2]});
   }
-  console.log(photos[pos][0] + ": " + photos[pos][1] + ", " + photos[pos][2]);
+  // console.log(photos[pos][0] + ": " + photos[pos][1] + ", " + photos[pos][2]);
   map.setZoom(photos[pos][4]);    // This is the function to use to change zooms
 }
