@@ -88,7 +88,10 @@ function getNewPath(direction) {
 // so it can be changed every time nextPhoto() is called. Change the alt attribute
 // and add either "landscape" or "portrait" to the classList so the dimensions display accordingly.
 function createNewImg(direction) {
+  let t1 = performance.now();
   let package = getNewPath(direction);
+  let t2 = performance.now();
+  console.log("Time for getNewPath(): " + ((t2-t1)*0.001).toFixed(4));
   let new_path = package[0];
   let next_pos = package[1]
   let new_img = document.createElement("img");
@@ -106,10 +109,7 @@ function createNewImg(direction) {
 // Create a new image object for the next photo and replace the current
 // img element with that new image object
 function nextPhoto() {
-  let t1 = performance.now();
   let new_img = createNewImg("next");
-  let t2 = performance.now();
-  console.log("Time for nextPhoto(): " + ((t2-t1)*0.001).toFixed(4));
   document.getElementById('cur_photo').replaceWith(new_img);
 }
 
@@ -117,10 +117,7 @@ function nextPhoto() {
 // img element with that new image object. This loads faster because the
 // img is already cached.
 function previousPhoto() {
-  let t1 = performance.now()
   let new_img = createNewImg("prev");
-  let t2 = performance.now()
-  console.log("Time for previousPhoto(): " + ((t2-t1)*0.001).toFixed(4));
   document.getElementById('cur_photo').replaceWith(new_img);
 }
 
@@ -183,7 +180,6 @@ function hasNewCenter(pos) {
 
 // Move the map to the coordinates associated with the new image
 function moveMap(pos) {
-  let t1 = performance.now();
   if (hasNewCenter(pos)) {
     map.setCenter({lat: photos[pos][5], lng: photos[pos][6]});
   } else {
@@ -191,6 +187,4 @@ function moveMap(pos) {
   }
   // console.log(photos[pos][0] + ": " + photos[pos][1] + ", " + photos[pos][2]);
   map.setZoom(photos[pos][4]);    // This is the function to use to change zooms
-  let t2 = performance.now();
-  console.log("Time for moveMap(): " + ((t2-t1)*0.001).toFixed(4));
 }
