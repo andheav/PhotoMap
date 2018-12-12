@@ -31,96 +31,6 @@ const photos = [
   ["DSC03183",45.245420,-92.987325,"landscape", 17, null, null]
 ];
 
-function getIndex(cur_photo) {
-  // Get the index of the photo array associated with the current photo.
-  let index = 0;
-  for (i=0; i<photos.length; i++) {
-    if (photos[i][0] == cur_photo) {
-      index = i;
-    }
-  }
-  return index;
-}
-
-function getNewPath(direction) {
-  // Get the current img object, dissect the filename, 
-  // get the next photo's filename, and create a new path to the next photo.
-  let cur_photo = document.getElementById('cur_photo');
-  let path = cur_photo.src.toString().split("/");
-
-  let cur_filename = path.pop();
-  cur_filename = cur_filename.split(".jpg")[0];
-
-  let beginning = path.join("/");
-
-  // This block determines if the next or back button was pressed and gives 
-  // the index to that photo accordingly
-  let next_pos = 0;
-  if (direction == "next") {
-    next_pos = getIndex(cur_filename) + 1;
-  } else if (direction == "prev") {
-    next_pos = getIndex(cur_filename) - 1;
-  }
-
-  // This block determines if the end of the photo array has been reached or not.
-  // This also prevents the user from clicking past and going out of bounds
-  if (next_pos == photos.length) {
-    document.getElementById('end').style.color = "black";
-    next_pos = photos.length-1;
-  } else if (next_pos !== photos.length) {
-    document.getElementById('end').style.color = "white";
-  }
-  
-  // This prevents the user from creating an error from clicking back at the beginning
-  // of the slideshow/the beginning of the photo array
-  if (next_pos < 0) {
-    next_pos = 0;
-  }
-
-  // This gets the new photo filename and creates the path to that photo.
-  // Returns the path to the photo and the index in the photo array.
-  let new_filename = photos[next_pos][0];
-  let new_path = beginning + "/" + new_filename + ".jpg";
-  return [new_path, next_pos];
-}
-
-// Create a new img object and assign the new path to it. Assign the new img the cur_photo id
-// so it can be changed every time nextPhoto() is called. Change the alt attribute
-// and add either "landscape" or "portrait" to the classList so the dimensions display accordingly.
-function createNewImg(direction) {
-  let t1 = performance.now();
-  let package = getNewPath(direction);
-  let t2 = performance.now();
-  console.log("Time for getNewPath(): " + ((t2-t1)*0.001).toFixed(4));
-  let new_path = package[0];
-  let next_pos = package[1]
-  let new_img = document.createElement("img");
-  new_img.src = new_path;
-  new_img.id = "cur_photo";
-  new_img.alt = "Current Image";
-  new_img.classList.add(photos[next_pos][3]);
-
-  // Call moveMap() on the next photo to be displayed to the map changes to
-  // the location associated with that photo.
-  moveMap(next_pos);
-  return new_img;
-}
-
-// Create a new image object for the next photo and replace the current
-// img element with that new image object
-function nextPhoto() {
-  let new_img = createNewImg("next");
-  document.getElementById('cur_photo').replaceWith(new_img);
-}
-
-// Create a new image object for the prev photo and replace the current
-// img element with that new image object. This loads faster because the
-// img is already cached.
-function previousPhoto() {
-  let new_img = createNewImg("prev");
-  document.getElementById('cur_photo').replaceWith(new_img);
-}
-
 var map;
 // var markersOn = true;
 // var markerArray = [];
@@ -187,4 +97,92 @@ function moveMap(pos) {
   }
   // console.log(photos[pos][0] + ": " + photos[pos][1] + ", " + photos[pos][2]);
   map.setZoom(photos[pos][4]);    // This is the function to use to change zooms
+}
+
+function getIndex(cur_photo) {
+  // Get the index of the photo array associated with the current photo.
+  let index = 0;
+  for (i=0; i<photos.length; i++) {
+    if (photos[i][0] == cur_photo) {
+      index = i;
+    }
+  }
+  return index;
+}
+
+function getNewPath(direction) {
+  // Get the current img object, dissect the filename, 
+  // get the next photo's filename, and create a new path to the next photo.
+  let cur_photo = document.getElementById('cur_photo');
+  let path = cur_photo.src.toString().split("/");
+
+  let cur_filename = path.pop();
+  cur_filename = cur_filename.split(".jpg")[0];
+
+  let beginning = path.join("/");
+
+  // This block determines if the next or back button was pressed and gives 
+  // the index to that photo accordingly
+  let next_pos = 0;
+  if (direction == "next") {
+    next_pos = getIndex(cur_filename) + 1;
+  } else if (direction == "prev") {
+    next_pos = getIndex(cur_filename) - 1;
+  }
+
+  // This block determines if the end of the photo array has been reached or not.
+  // This also prevents the user from clicking past and going out of bounds
+  let end_of_show = document.getElementById('end');
+  if (next_pos == photos.length) {
+    end_of_show.style.color = "black";
+    next_pos = photos.length-1;
+  } else if (next_pos !== photos.length && end_of_show.style.color !== "white") {
+    end_of_show.style.color = "white";
+  }
+  
+  // This prevents the user from creating an error from clicking back at the beginning
+  // of the slideshow/the beginning of the photo array
+  if (next_pos < 0) {
+    next_pos = 0;
+  }
+
+  // This gets the new photo filename and creates the path to that photo.
+  // Returns the path to the photo and the index in the photo array.
+  let new_filename = photos[next_pos][0];
+  let new_path = beginning + "/" + new_filename + ".jpg";
+  return [new_path, next_pos];
+}
+
+// Create a new img object and assign the new path to it. Assign the new img the cur_photo id
+// so it can be changed every time nextPhoto() is called. Change the alt attribute
+// and add either "landscape" or "portrait" to the classList so the dimensions display accordingly.
+function createNewImg(direction) {
+  let package = getNewPath(direction);
+  let new_path = package[0];
+  let next_pos = package[1]
+  let new_img = document.createElement("img");
+  new_img.src = new_path;
+  new_img.id = "cur_photo";
+  new_img.alt = "Current Image";
+  new_img.classList.add(photos[next_pos][3]);
+
+  // Call moveMap() on the next photo to be displayed to the map changes to
+  // the location associated with that photo.
+  moveMap(next_pos);
+  return new_img;
+}
+
+// Create a new image object for the next photo and replace the current
+// img element with that new image object
+function nextPhoto() {
+  let new_img = createNewImg("next");
+  document.getElementById('cur_photo').replaceWith(new_img);
+}
+
+// Create a new image object for the prev photo and replace the current
+// img element with that new image object. This loads faster because the
+// img is already cached.
+function previousPhoto() {
+  let new_img = createNewImg("prev");
+  document.getElementById('cur_photo').replaceWith(new_img);
 }
