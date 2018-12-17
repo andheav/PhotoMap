@@ -131,13 +131,16 @@ function getNewPath(direction) {
 
   // This block determines if the end of the photo array has been reached or not.
   // This also prevents the user from clicking past and going out of bounds
-  let end_of_show = document.getElementById('end');
+  // let end_of_show = document.getElementById('end');
+
+  // Uncomment the code in this bit to make the photos NOT loop back around to beginning
   if (next_pos == photos.length) {
-    end_of_show.style.color = "black";
-    next_pos = photos.length-1;
-  } else if (next_pos !== photos.length && end_of_show.style.color !== "white") {
-    end_of_show.style.color = "white";
+    // end_of_show.style.color = "black";
+    next_pos = 0;
   }
+  // } else if (next_pos !== photos.length && end_of_show.style.color !== "white") {
+  //   end_of_show.style.color = "white";
+  // }
   
   // This prevents the user from creating an error from clicking back at the beginning
   // of the slideshow/the beginning of the photo array
