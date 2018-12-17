@@ -59,3 +59,26 @@
   font-family: none;
   font-size: 20px;
 }
+
+.button {
+  background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+  outline: inherit;
+  margin-left: 30px;
+  font-size: 40px;
+  font-family: none;
+  color: rgb(70, 70, 70);
+}
+
+.button:hover {
+  color: black;
+  font-family: none;
+}
+
+.button:focus {
+  outline: none;
+}
