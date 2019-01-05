@@ -94,7 +94,6 @@ function moveMap(pos) {
   } else {
     map.setCenter({lat: photos[pos][1], lng: photos[pos][2]});
   }
-  // console.log(photos[pos][0] + ": " + photos[pos][1] + ", " + photos[pos][2]);
   map.setZoom(photos[pos][4]);    // This is the function to use to change zooms
 }
 
@@ -135,12 +134,8 @@ function getNewPath(direction) {
 
   // Uncomment the code in this bit to make the photos NOT loop back around to beginning
   if (next_pos == photos.length) {
-    // end_of_show.style.color = "black";
     next_pos = 0;
   }
-  // } else if (next_pos !== photos.length && end_of_show.style.color !== "white") {
-  //   end_of_show.style.color = "white";
-  // }
   
   // This prevents the user from creating an error from clicking back at the beginning
   // of the slideshow/the beginning of the photo array
