@@ -31,30 +31,6 @@ const photos = [
 ];
 
 var map;
-// var markersOn = true;
-// var markerArray = [];
-
-// function createMarkerArray() {
-//   for (i=0; i<photos.length; i++) {
-//     markerArray.push(new google.maps.Marker({position: {lat: photos[i][1], lng: photos[i][2]}, map: map}));
-//   }
-// }
-
-// function toggleMarkers() {
-//   console.log("working; markersOn: " + markersOn);
-//   markersOn = !markersOn;
-//   if (markersOn) {
-//     for (i=0; i<markerArray.length; i++) {
-//       markerArray[i].setMap(map);
-//     }
-//   } else {
-//     for (i=0; i<markerArray.length; i++) {
-//       markerArray[i].setMap(null);
-//     }
-//     markerArray = [];
-//   }
-// }
-
 function initMap() {
   // Initialize the map to start on the airport
   var airport = {lat: 45.245545, lng: -92.987073};
@@ -66,8 +42,6 @@ function initMap() {
     streetViewControl: false,
     disableDefaultUI: true
   });
-  // createMarkerArray();
-  // plotMarkers();                   // Uncomment this to display the markers
 }
 
 // Go through and plot the markers on the map
@@ -130,9 +104,6 @@ function getNewPath(direction) {
 
   // This block determines if the end of the photo array has been reached or not.
   // This also prevents the user from clicking past and going out of bounds
-  // let end_of_show = document.getElementById('end');
-
-  // Uncomment the code in this bit to make the photos NOT loop back around to beginning
   if (next_pos == photos.length) {
     next_pos = 0;
   }
@@ -156,16 +127,16 @@ function getNewPath(direction) {
 function createNewImg(direction) {
   let package = getNewPath(direction);
   let new_path = package[0];
-  let next_pos = package[1]
+  let index = package[1]
   let new_img = document.createElement("img");
   new_img.src = new_path;
   new_img.id = "cur_photo";
   new_img.alt = "Current Image";
-  new_img.classList.add(photos[next_pos][3]);
+  new_img.classList.add(photos[index][3]);
 
   // Call moveMap() on the next photo to be displayed to the map changes to
   // the location associated with that photo.
-  moveMap(next_pos);
+  moveMap(index);
   return new_img;
 }
 
